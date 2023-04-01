@@ -16,3 +16,26 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//
+
+Route::get('/index', function () {
+    return view('index');
+});
+
+//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//
+
+Route::get('/contact', function () {
+
+    $name = "Diony";
+    $idade = '21';
+    $product = "Tesla";
+
+    return view('contact', ['name' => $name, 'idade' => $idade, 'product' => $product]);
+});
+
+//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//-//-//--//
+
+Route::get('/contact/product', function () {
+    return view('product');
+});

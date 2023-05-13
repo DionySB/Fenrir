@@ -20,15 +20,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-//Users
-Route::get('/users', [UserController::class, 'index']);
-Route::post('/users', [UserController::class, 'store']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
-Route::put('/users/{id}',[UserController::class, 'update']);
+// Rotas de autenticação
+Route::post('/register', 'Auth\RegisterController@register');
+Route::post('/login', 'Auth\LoginController@login');
 
-Route::post('password/reset', [PasswordResetController::class, 'reset']);
+// Rotas de usuários
+Route::middleware('auth:sanctum')->get('/users', 'UserController@index');
+Route::middleware('auth:sanctum')->get('/users/{id}', 'UserController@show');
+Route::middleware('auth:sanctum')->put('/users/{id}', 'UserController@update');
+Route::middleware('auth:sanctum')->delete('/users/{id}', 'UserController@destroy');
 
-/*Route::get('/users', function() {
-	return 'alllowed case';
-});*/
+// Rota de logout
+Route::middleware('auth:sanctum')->post('/logout', 'Auth\LoginController@logout');
+

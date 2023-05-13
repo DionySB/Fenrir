@@ -19,15 +19,14 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'active' => true,
-        ]);
-
+        $validatedData = $request->validated();
+    
+        $user = User::create($validatedData);
+    
         return response()->json(['data' => $user], 201);
     }
+    
+    
 
     public function update(UserRequest $request, $id)
     {

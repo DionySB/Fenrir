@@ -7,16 +7,25 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset emails and
-    | includes a trait which assists in sending these notifications from
-    | your application to your users. Feel free to explore this trait.
-    |
-    */
-
-    use SendsPasswordResetEmails;
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $email = $request->input('email');
+        $user = User::where('email', $email)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'Usuário não encontrado.'], 404);
+        }
+    
+        $token = Str::random(60);
+    
+        PasswordReset::create([
+            'email' => $email,
+            'token' => $token
+        ]);
+    
+        $user->sendPasswordResetNotification($token);
+    
+        return response()->json(['message' => 'Email de recuperação de senha enviado com sucesso.']);
+    }
+    
 }

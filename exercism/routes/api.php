@@ -25,8 +25,9 @@ Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
-Route::post('/users/{id}',[UserController::class, 'update']);
+Route::put('/users/{id}',[UserController::class, 'update']);
 
+Route::post('password/reset', [PasswordResetController::class, 'reset']);
 
 /*Route::get('/users', function() {
 	return 'alllowed case';

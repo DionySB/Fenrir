@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\Validator;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserRequest extends FormRequest
 {
@@ -46,7 +47,7 @@ class UserRequest extends FormRequest
         ];
     }
 
-    public function failedValidationRequest(Validator $validator)
+    public function failedValidation(Validator $validator)
 {
     throw new HttpResponseException(response()->json([
         'message' => 'Os dados da requisição são inválidos.',

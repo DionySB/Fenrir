@@ -18,5 +18,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Auth::routes(['verify' => true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::put('/user/{id}/trash', [UserController::class, 'trash']);
+Route::put('/user/{id}/untrash', [UserController::class, 'untrash']);
+
+

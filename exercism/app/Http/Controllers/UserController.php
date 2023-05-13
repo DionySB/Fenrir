@@ -2,44 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function index(Request $request)
+    {
+        $users = User::orderBy('id')->get();
 
-    public function index(){
-        return User::All();
-        
+        return response()->json(['data' => $users]);
     }
 
-    public function store(UserRequest $request){
-
-        $user = User::create($request->validated());
-
-        return response()->json([
-            'message' => 'User created successfully',
-            'data' => $user
+    public function store(UserRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'active' => true,
         ]);
+
+        return response()->json(['data' => $user], 201);
     }
 
-    public function update(UserRequest $request) {
-
-        $validated = $request->validated();
-    }
-
-    public function show(string $id)
+    public function update(UserRequest $request, $id)
     {
-        return User::findOrFail($id);
+        $user = User::findOrFail($id);
 
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return response()->json(['data' => $user]);
     }
 
-    public function destroy(string $id)
+    public function show($id)
     {
-        User::where('id', $id)->delete();
+        $user = User::findOrFail($id);
+
+        return response()->json(['data' => $user]);
     }
 
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'Usuário removido com sucesso.']);
+    }
+
+    public function trash($id)
+    {
+        $user = User::findOrFail($id);
+        $user->active = false;
+        $user->save();
+
+        return response()->json(['message' => 'Usuário enviado para a lixeira.']);
+    }
+
+    public function untrash($id)
+    {
+        $user = User::findOrFail($id);
+        $user->active = true;
+        $user->save();
+
+        return response()->json(['message' => 'Usuário recuperado da lixeira.']);
+    }
 }

@@ -22,8 +22,8 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User created successfully',
-            'user' => $user
-        ], 201);
+            'data' => $user
+        ]);
     }
 
     public function update(UserRequest $request) {

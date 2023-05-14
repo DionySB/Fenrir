@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@section('styles')
-    <link href="{{ asset('login.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/login.css') }}" rel="stylesheet">
-    <link href="{{ asset('\Fenrir\exercism\public\css\login.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../public/css/login.css">
-@endsection
-
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -79,4 +71,3 @@
         </div>
     </div>
 @endsection
-

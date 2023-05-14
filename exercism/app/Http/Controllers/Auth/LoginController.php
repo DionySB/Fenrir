@@ -9,16 +9,19 @@ class LoginController extends Controller
 {
     public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+    
         if (Auth::attempt($credentials)) {
-            // Autenticação bem-sucedida...
-            return redirect()->intended('dashboard');
+            $request->session()->regenerate();
+            return redirect()->intended('/');
         }
-
-        // Autenticação falhou...
+    
         return back()->withErrors([
-            'email' => 'As credenciais fornecidas não correspondem aos nossos registros.',
+            'email' => 'The provided credentials do not match our records.',
         ]);
     }
+    
 }

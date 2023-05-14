@@ -10,70 +10,36 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $users = User::orderBy('id')->get();
-
-        return response()->json(['data' => $users]);
+        $users = User::all();
+    
+        return response()->json($users->toArray());
     }
 
     public function store(UserRequest $request)
     {
-        $validatedData = $request->validated();
-    
-        $user = User::create($validatedData);
-    
-        return response()->json(['data' => $user], 201);
+        $user = User::create($request->validated());
+
+        return response()->json([
+            'message' => 'User created successfully',
+            'data' => $user
+        ]);
     }
-    
-    
-
-    public function update(UserRequest $request, $id)
+    public function trash(UserRequest $request, $id)
     {
-        $user = User::findOrFail($id);
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-        return response()->json(['data' => $user]);
-    }
-
-    public function show($id)
-    {
-        $user = User::findOrFail($id);
-
-        return response()->json(['data' => $user]);
-    }
-
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return response()->json(['message' => 'Usuário removido com sucesso.']);
-    }
-
-    public function trash($id)
-    {
+        $validated = $request->validate($request->rulesForTrash());
         $user = User::findOrFail($id);
         $user->active = false;
         $user->save();
-
-        return response()->json(['message' => 'Usuário enviado para a lixeira.']);
+        return response()->json(['message' => 'User trashed successfully'], 200);
     }
-
+    
     public function untrash($id)
     {
         $user = User::findOrFail($id);
         $user->active = true;
         $user->save();
-
-        return response()->json(['message' => 'Usuário recuperado da lixeira.']);
+        return response()->json(['message' => 'User untrashed successfully'], 200);
     }
 }

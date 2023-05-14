@@ -11,7 +11,7 @@ class CreatePasswordResetTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
+        Schema::create('password_resets_tokens', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->string('email');
@@ -26,6 +26,6 @@ class CreatePasswordResetTokensTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('password_resets_tokens');
     }
 };

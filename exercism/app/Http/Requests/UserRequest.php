@@ -1,36 +1,62 @@
 <?php
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class UserRequest extends FormRequest
 {
+    public function authorize()
+    {
+        return true;
+    }
+
     public function rules()
     {
-        $uuid = $this->route('id');
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$uuid,
-            'password' => 'sometimes|confirmed|min:8',
-            'active' => 'sometimes|boolean',
-            'password_confirmation' => 'sometimes|min:8',
-        ];
-    }
-    
-    public function rulesForTrash()
-    {
-        $uuid = $this->route('id');
-        return [
-            'id' => 'required|exists:users,id',
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
         ];
     }
 
-    public function failedValidation(Validator $validator)
+    public function messages()
     {
-        throw new HttpResponseException(response()->json([
-            'message' => 'Os dados da requisição são inválidos.',
-            'errors' => $validator->errors(),
-        ], 422));
+        return [
+            'name.required' => 'O campo nome é obrigatório.',
+            'email.required' => 'O campo e-mail é obrigatório.',
+            'email.email' => 'O e-mail fornecido não é válido.',
+            'email.unique' => 'Este e-mail já está cadastrado.',
+            'password.required' => 'O campo senha é obrigatório.',
+            'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
+        ];
+    }
+
+    /**
+     * Get the validation rules for restoring a soft deleted model instance.
+     *
+     * @return array
+     */
+    public function rulesForRestore()
+    {
+        return [
+            'id' => ['required', 'integer', 'exists:users,id'],
+        ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function failedValidation($validator)
+    {
+        $errors = $validator->errors()->toArray();
+        throw new \Illuminate\Validation\ValidationException($validator, response()->json($errors, 422));
     }
 }

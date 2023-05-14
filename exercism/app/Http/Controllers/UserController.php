@@ -26,6 +26,15 @@ class UserController extends Controller
             'data' => $user
         ]);
     }
+
+    public function destroy(UserRequest $request, $id)
+    {
+        $validated = $request->validate($request->rulesForRestore());
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
     public function trash(UserRequest $request, $id)
     {
         $validated = $request->validate($request->rulesForTrash());

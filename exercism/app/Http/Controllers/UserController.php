@@ -29,11 +29,7 @@ class UserController extends Controller
         $user->email = $validated['email'];
         $user->password = Hash::make($validated['password']);
         $user->save();
-
-        
-
-        event(new UserCreated($user));
-        Log::debug('Usuário criado', ['user_id' => $user->id]);
+        event(new Registered($user));
         return response()->json([
             'message' => 'user create sucessful',
             'user' => $user,

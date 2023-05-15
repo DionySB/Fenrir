@@ -1,18 +1,24 @@
 <?php
 
-use App\Models\User;
+namespace App\Handlers\Events;
+
+use App\Events\UserCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Services\EmailVerificationService;
 
-class UserCreatedHandler implements ShouldQueue
+class UserCreatedHandler
 {
-    use InteractsWithQueue;
+    private $emailVerificationService;
+
+    public function __construct(EmailVerificationService $emailVerificationService)
+    {
+        $this->emailVerificationService = $emailVerificationService;
+    }
 
     public function handle(UserCreated $event)
     {
         $user = $event->getUser();
-
-        // Send email verification notification to the user
-        $user->sendEmailVerificationNotification();
+        $this->emailVerificationService->sendVerificationEmail($user);
     }
 }

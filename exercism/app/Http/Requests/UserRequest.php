@@ -8,20 +8,49 @@ use Illuminate\Contracts\Validation\Validator;
 
 class UserRequest extends FormRequest
 {
+    /**
+     * 
+     */
     public function authorize()
     {
         return true;
     }
 
+    /**
+     * 
+     */
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'name' => 'nullable|string',
+            'email' => 'required'
         ];
     }
 
+    public function Store()
+    {
+        return [
+            'name' => 'nullable|string',
+            'email' => 'required'
+        ];
+    }
+
+    public function rulesForUpdate()
+    {
+        return [
+            'name' => 'nullable|string',
+            'email' => [
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->ignore($this->route('id'))
+            ],
+            'password' => 'nullable|string|min:6',
+            'status' => 'nullable|string'
+        ];
+    }
+    /**
+     * 
+     */
     public function messages()
     {
         return [
@@ -31,18 +60,6 @@ class UserRequest extends FormRequest
             'email.unique' => 'Este e-mail já está cadastrado.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
-        ];
-    }
-
-    /**
-     * Get the validation rules for restoring a soft deleted model instance.
-     *
-     * @return array
-     */
-    public function rulesForRestore()
-    {
-        return [
-            'id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 

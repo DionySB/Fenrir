@@ -15,13 +15,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory,  Notifiable, HasUuids;
 
-    public function save(array $options = array()) {
-        if(isset($this->remember_token))
-            unset($this->remember_token);
-    
-        return parent::save($options);
-    }
-    
     public $timestamps = true;
     protected $table = 'users';
     protected $keyType = 'string';
@@ -43,7 +36,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'string',
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'status' => 'string'
+        
     ];
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -22,20 +23,22 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'nullable|string',
-            'email' => 'required'
+            'name' => 'required|string',
+            'email' => 'nullable|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'password_confirmation' => 'required_with:password|same:password'
         ];
     }
 
-    public function Store()
+    public function store()
     {
         return [
-            'name' => 'nullable|string',
-            'email' => 'required'
+            'name',
+            'email',
         ];
     }
 
-    public function rulesForUpdate()
+    public function update()
     {
         return [
             'name' => 'nullable|string',
@@ -44,8 +47,7 @@ class UserRequest extends FormRequest
                 'email',
                 Rule::unique('users', 'email')->ignore($this->route('id'))
             ],
-            'password' => 'nullable|string|min:6',
-            'status' => 'nullable|string'
+            'password' => 'nullable|string|min:6|confirmed',
         ];
     }
     /**

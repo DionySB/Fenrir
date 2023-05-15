@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Events\UserCreated;
 
 class UserController extends Controller
 {
@@ -22,9 +23,13 @@ class UserController extends Controller
         $validated = $request->validated();
     
         $user = new User;
-        $user->password = Hash::make($request->input('password'));
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->password = Hash::make($validated['password']);
         $user->save();
-    
+
+        event(new UserCreated($user));
+
         return response()->json([
             'message' => 'user create sucessful',
             'user' => $user,
@@ -34,13 +39,21 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
-        $user->fill($request->validated());
+        $validatedData = $request->validated();
+        if (isset($validatedData['password']) && !empty($validatedData['password'])) {
+            if ($validatedData['password_confirmation'] != $validatedData['password']) {
+                return response()->json(['error' => 'Password confirmation does not match'], 422);
+            }
+            $user->password = bcrypt($validatedData['password']);
+            unset($validatedData['password']);
+            unset($validatedData['password_confirmation']);
+        }
+        $user->fill($validatedData);
         $user->save();
         return response()->json([
             'message' => 'User updated successfully',
             'data' => $user
         ]);
-
     }
 
     public function show($id)
@@ -50,7 +63,7 @@ class UserController extends Controller
 
     }
 
-    public function destroy(UserRequest $request, $id)
+    public function destroy(string $id)
     {
         $user = User::findOrFail($id);
         $user->delete();
@@ -72,5 +85,18 @@ class UserController extends Controller
         $user->active = true;
         $user->save();
         return response()->json(['message' => 'User untrashed successfully'], 200);
+    }
+
+    public function verifyEmail($id, $hash)
+    {
+        $user = User::findOrFail($id);
+
+        if (!$user->hasVerifiedEmail()) {
+            if ($user->markEmailAsVerified()) {
+                event(new Verified($user));
+            }
+        }
+
+        return redirect('/home');
     }
 }

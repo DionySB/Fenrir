@@ -9,7 +9,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\DashboardController;
-use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\VerificationController;
 
 
 Route::get('/', function () {
@@ -26,7 +26,7 @@ Route::get('/users/{id}/verify-email/{hash}', [UserController::class, 'verifyEma
 
 Route::group(['middleware' => ['auth']], function() {
 
-    Route::get('/email/verify', [VerificationController::class, 'index'])->name('verification.notice');
+    Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify')->middleware(['signed']);
     Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 

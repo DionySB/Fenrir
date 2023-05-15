@@ -9,11 +9,13 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Events\UserCreated;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     public function index()
     {
+        Log::debug("teste");
         $users = User::orderBy('created_at')->get();
         return response()->json($users);
 
@@ -28,12 +30,17 @@ class UserController extends Controller
         $user->password = Hash::make($validated['password']);
         $user->save();
 
-        event(new UserCreated($user));
+        
 
+        event(new UserCreated($user));
+        Log::debug('Usuário criado', ['user_id' => $user->id]);
         return response()->json([
             'message' => 'user create sucessful',
             'user' => $user,
         ], 201);
+
+
+        
     }
 
     public function update(UserRequest $request, $id)

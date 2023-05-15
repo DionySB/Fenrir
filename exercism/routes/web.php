@@ -8,7 +8,7 @@ use App\Http\Controllers\EmailVerificationPromptController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\DashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VerificationController;
 
 

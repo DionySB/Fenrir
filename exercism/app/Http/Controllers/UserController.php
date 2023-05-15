@@ -21,6 +21,7 @@ class UserController extends Controller
 
     }
 
+    /*
     public function store(UserRequest $request) {
         $validated = $request->validated();
     
@@ -37,8 +38,22 @@ class UserController extends Controller
 
 
         
-    }
+    } */
 
+    public function store(UserRequest $request)
+{
+    $validated = $request->validated();
+
+    $user = new User();
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+    $user->password = bcrypt($validated['password']);
+    $user->save();
+    event(new Registered($user));
+    return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+}
+
+    
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);

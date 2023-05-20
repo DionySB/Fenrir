@@ -10,39 +10,41 @@ use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Adress;
 
-class User extends Authenticatable implements MustVerifyEmail
+class Adress extends Model
 {
-    use HasApiTokens, HasFactory,  Notifiable, HasUuids;
+    use HasUuids;
 
     public $timestamps = true;
-    protected $table = 'users';
+    protected $table = 'adresses';
     protected $keyType = 'string';
     protected $fillable = [
         'id',
-        'name',
-        'email',
-        'email_verified_at',
-        'password',
-        'address_id',
+        'address',
+        'city',
+        'postalcode',
+        'province',
+        'user_id',
         'created_at',
         'updated_at'
+        
     ];
     
     protected $casts = [
         'id' => 'string',
-        'name' => 'string',
-        'email' => 'string',
-        'password' => 'string',
-        'email_verified_at' => 'datetime',
+        'address' => 'string',
+        'city' => 'string',
+        'postalcode' => 'string',
+        'province' => 'string',
+        'user_id' => 'string',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'address_id' => 'string'
+        'updated_at' => 'datetime'
+
     ];
 
     public function address()
     {
         return $this->belongsTo(Address::class);
     }
+
 }

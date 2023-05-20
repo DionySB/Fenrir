@@ -26,28 +26,22 @@ class UserRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'nullable|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'password_confirmation' => 'required_with:password|same:password'
+            'password_confirmation' => 'required_with:password|same:password',
+            'address_id' => 'exists:addresses,id',
         ];
     }
 
     public function store()
     {
         return [
-            'name',
-            'email',
+
         ];
     }
 
     public function update()
     {
         return [
-            'name' => 'nullable|string',
-            'email' => [
-                'nullable',
-                'email',
-                Rule::unique('users', 'email')->ignore($this->route('id'))
-            ],
-            'password' => 'nullable|string|min:6|confirmed',
+
         ];
     }
     /**

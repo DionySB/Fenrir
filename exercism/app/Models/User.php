@@ -10,7 +10,7 @@ use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Adress;
+use App\Models\Address;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -36,9 +36,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'email' => 'string',
         'password' => 'string',
         'email_verified_at' => 'datetime',
+        'address_id' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'address_id' => 'string'
+
     ];
 
     public function address()

@@ -13,10 +13,11 @@ class UserTransformer extends TransformerAbstract
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'email_verified_at'=> $emailVerifiedAt,
+            'email_verified_at'=> $email_verified_at,
             'password' =>$user->password,
-            'created_at' =>$createdAt,
-            'updated_at' =>$updatedAt,
+            'adress_id' =>$user->adress_id,
+            'created_at' =>$created_at,
+            'updated_at' =>$updated_at,
             
         ];
     }

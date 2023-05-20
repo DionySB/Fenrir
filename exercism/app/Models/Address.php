@@ -8,15 +8,14 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Adress extends Model
+
+class Address extends Model
 {
     use HasUuids;
 
     public $timestamps = true;
-    protected $table = 'adresses';
+    protected $table = 'addresses';
     protected $keyType = 'string';
     protected $fillable = [
         'id',
@@ -42,9 +41,8 @@ class Adress extends Model
 
     ];
 
-    public function address()
+    public function user()
     {
-        return $this->belongsTo(Address::class);
+        return $this->hasOne(User::class);
     }
-
 }

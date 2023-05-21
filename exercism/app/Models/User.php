@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
         'password',
         'address_id',
+        'profile_id',
         'created_at',
         'updated_at'
     ];
@@ -37,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'string',
         'email_verified_at' => 'datetime',
         'address_id' => 'string',
+        'profile_id' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
 
@@ -45,5 +47,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function address()
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
     }
 }

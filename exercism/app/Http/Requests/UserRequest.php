@@ -27,7 +27,7 @@ class UserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'password_confirmation' => 'required_with:password|same:password',
-            'address_id' => 'exists:addresses|uuid',
+            'address_id' => 'uuid|nullable',
         ];
     }
 

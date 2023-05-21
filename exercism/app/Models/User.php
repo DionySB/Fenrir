@@ -55,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     public function address()
     {
-        return $this->hasOne(Address::class, 'address_id', 'id');
+        return $this->hasOne(Address::class);
     }
 
     public function profile()

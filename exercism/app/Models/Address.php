@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\GenerateUuid;
@@ -43,6 +44,7 @@ class Address extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->hasOne(User::class, 'user_id', 'id');
     }
+
 }

@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UserService
 {
-    public function createUser(array $data)
+    public function registerUser(array $data)
     {
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);

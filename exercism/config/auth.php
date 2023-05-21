@@ -63,12 +63,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+            'table' => 'users',
+            'email' => 'auth.emails.verify',
+            'email_resend' => 'auth.emails.resend',
+            'notification' => App\Notifications\CustomVerifyEmailNotification::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

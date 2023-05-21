@@ -24,10 +24,10 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'nullable|email|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'password_confirmation' => 'required_with:password|same:password',
-            'address_id' => 'exists:addresses,id',
+            'address_id' => 'exists:addresses|uuid',
         ];
     }
 

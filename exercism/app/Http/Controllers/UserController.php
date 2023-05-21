@@ -24,17 +24,16 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::orderBy('created_at')->get();
+        $users = User::with('address')->orderBy('created_at')->get();
         return response()->json($users);
     }
 
-    public function store(UserRequest $request)
+    public function register(UserRequest $request)
     {
         $data = $request->validated();
 
-        $user = $this->userService->createUser($data);
-
-        // Retorne a resposta adequada, como um JSON com o usuário criado
+        $user = $this->userService->registerUser($data);
+        
         return response()->json($user);
     }
     
@@ -97,5 +96,15 @@ class UserController extends Controller
         }
 
         return redirect('/home');
+    }
+
+    public function store_address(){
+
+        $user = User::find(1);
+
+        $adress_id = new Address;
+        $address_id->user_id = $user->id;
+        $adress_id->save();
+        dd($address_id);
     }
 }

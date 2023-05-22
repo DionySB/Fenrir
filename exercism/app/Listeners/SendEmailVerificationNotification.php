@@ -18,5 +18,7 @@ class SendEmailVerificationNotification implements ShouldQueue
     {
         $user = $event->user;
         $user->sendEmailVerificationNotification();
+
+        dd(teste);
     }
 }

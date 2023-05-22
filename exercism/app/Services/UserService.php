@@ -12,7 +12,7 @@ class UserService
     {
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
-
+        $user->sendEmailVerificationNotification();
         return $user;
     }
 

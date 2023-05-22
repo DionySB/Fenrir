@@ -85,7 +85,7 @@ class UserController extends Controller
         return response()->json(['message' => 'User untrashed successfully'], 200);
     }
 
-    public function verifyEmail($id, $hash)
+   /* public function verifyEmail($id, $hash)
     {
         $user = User::findOrFail($id);
 
@@ -96,7 +96,7 @@ class UserController extends Controller
         }
 
         return redirect('/home');
-    }
+    }*/
 
     public function store_address(){
 

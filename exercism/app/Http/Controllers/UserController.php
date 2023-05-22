@@ -10,7 +10,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Events\UserCreated;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Auth\Events\Registered;
+use App\Events\UserRegistered;
 use App\Services\UserService;
 
 class UserController extends Controller
@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('address')->orderBy('created_at')->get();
+        $users = User::with('address')->get();
         return response()->json($users);
     }
 
@@ -33,7 +33,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         $user = $this->userService->registerUser($data);
-        
+        event(new UserRegistered($user));
         return response()->json($user);
     }
     

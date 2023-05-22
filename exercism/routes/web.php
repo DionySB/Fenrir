@@ -16,10 +16,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Login of user
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+//Register of user
+Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [LoginController::class, 'register']);
 require __DIR__.'/auth.php';
 
 Route::get('/users/{id}/verify-email/{hash}', [UserController::class, 'verifyEmail'])->name('verify.email');

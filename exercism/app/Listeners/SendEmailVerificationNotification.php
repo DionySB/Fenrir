@@ -16,9 +16,6 @@ class SendEmailVerificationNotification implements ShouldQueue
 
     public function handle(UserRegistered $event)
     {
-        $user = $event->user;
-        $user->sendEmailVerificationNotification();
-
-        dd(teste);
+        $event->user->notify(new CustomVerifyEmailNotification);
     }
 }

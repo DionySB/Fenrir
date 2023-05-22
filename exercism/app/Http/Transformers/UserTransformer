@@ -1,0 +1,35 @@
+<?php
+use League\Fractal\TransformerAbstract;
+
+class UserTransformer extends TransformerAbstract
+{
+    protected $availableIncludes = [
+        'address'
+    ];
+
+    public function transform(User $user)
+    {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'email_verified_at'=> $email_verified_at,
+            'password' =>$user->password,
+            'adress_id' =>$user->adress_id,
+            'created_at' =>$created_at,
+            'updated_at' =>$updated_at,
+            
+        ];
+    }
+
+    public function includeAddress(User $user)
+    {
+        $address = $user->address;
+        
+        if ($address) {
+            return $this->item($address, new AddressTransformer(), 'adress_id', 'id');
+        }
+    
+        return null;
+    }
+}

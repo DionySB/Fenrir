@@ -8,12 +8,15 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Address;
+use App\Notifications\CustomVerifyEmailNotification;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasApiTokens, HasFactory,  Notifiable, HasUuids;
+    use HasApiTokens, HasFactory,  Notifiable, HasUuids, MustVerifyEmail;
 
     public $timestamps = true;
     protected $table = 'users';
@@ -24,8 +27,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'email_verified_at',
         'password',
+        'address_id',
+        'profile_id',
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
     
     protected $casts = [
@@ -34,10 +39,28 @@ class User extends Authenticatable implements MustVerifyEmail
         'email' => 'string',
         'password' => 'string',
         'email_verified_at' => 'datetime',
+        'address_id' => 'string',
+        'profile_id' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        
+
     ];
 
+    /**
+     * void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmailNotification);
+    }
 
+    public function address()
+    {
+        return $this->hasOne(Address::class, 'id', 'address_id');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }

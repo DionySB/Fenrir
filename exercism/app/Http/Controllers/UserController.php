@@ -10,68 +10,47 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Events\UserCreated;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Auth\Events\Registered;
+use App\Events\UserRegistered;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index()
     {
-        Log::debug("teste");
-        $users = User::orderBy('created_at')->get();
+        $users = User::with('address')->get();
         return response()->json($users);
-
     }
 
-    /*
-    public function store(UserRequest $request) {
-        $validated = $request->validated();
-    
-        $user = new User;
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->password = Hash::make($validated['password']);
-        $user->save();
-        event(new Registered($user));
-        return response()->json([
-            'message' => 'user create sucessful',
-            'user' => $user,
-        ], 201);
-
-
-        
-    } */
-
-    public function store(UserRequest $request)
+    public function register(UserRequest $request)
     {
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        $user = new User();
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->password = bcrypt($validated['password']);
-        $user->save();
-        event(new Registered($user));
-        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+        $user = $this->userService->registerUser($data);
+        event(new UserRegistered($user));
+        return response()->json($user);
     }
-
     
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
         $validatedData = $request->validated();
-        if (isset($validatedData['password']) && !empty($validatedData['password'])) {
-            if ($validatedData['password_confirmation'] != $validatedData['password']) {
-                return response()->json(['error' => 'Password confirmation does not match'], 422);
-            }
-            $user->password = bcrypt($validatedData['password']);
-            unset($validatedData['password']);
-            unset($validatedData['password_confirmation']);
+    
+        $result = $this->userService->updateUser($user, $validatedData);
+    
+        if (isset($result['error'])) {
+            return response()->json(['error' => $result['error']], 422);
         }
-        $user->fill($validatedData);
-        $user->save();
+    
         return response()->json([
             'message' => 'User updated successfully',
-            'data' => $user
+            'data' => $result
         ]);
     }
 
@@ -106,7 +85,7 @@ class UserController extends Controller
         return response()->json(['message' => 'User untrashed successfully'], 200);
     }
 
-    public function verifyEmail($id, $hash)
+   /* public function verifyEmail($id, $hash)
     {
         $user = User::findOrFail($id);
 
@@ -117,5 +96,15 @@ class UserController extends Controller
         }
 
         return redirect('/home');
+    }*/
+
+    public function store_address(){
+
+        $user = User::find(1);
+
+        $adress_id = new Address;
+        $address_id->user_id = $user->id;
+        $adress_id->save();
+        dd($address_id);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Events\UserRegistered;
+use App\Models\Profile;
 
 class UserService
 {
@@ -13,6 +14,7 @@ class UserService
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
         $user->sendEmailVerificationNotification();
+
         return $user;
     }
 

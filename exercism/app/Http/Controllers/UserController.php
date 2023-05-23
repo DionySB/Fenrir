@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('address')->get();
+        $users = User::with('address', 'address.user', 'profile')->get();
         return response()->json($users);
     }
 

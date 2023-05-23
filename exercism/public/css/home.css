@@ -1,0 +1,22 @@
+.bg-light {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.lead {
+  margin-bottom: 20px;
+}
+
+.btn {
+  margin-right: 10px;
+}
+
+.body {
+  background-color: aquamarine;
+}

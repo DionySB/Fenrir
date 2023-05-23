@@ -12,6 +12,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Address;
+use App\Models\Profile;
 use App\Notifications\CustomVerifyEmailNotification;
 
 class User extends Authenticatable implements MustVerifyEmailContract
@@ -61,6 +62,6 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     public function profile()
     {
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class, 'id', 'profile_id');
     }
 }

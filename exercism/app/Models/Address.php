@@ -20,9 +20,9 @@ class Address extends Model
     protected $keyType = 'string';
     protected $fillable = [
         'id',
-        'address',
+        'street',
         'city',
-        'postalcode',
+        'postal_code',
         'province',
         'user_id',
         'created_at',
@@ -32,9 +32,9 @@ class Address extends Model
     
     protected $casts = [
         'id' => 'string',
-        'address' => 'string',
+        'street' => 'string',
         'city' => 'string',
-        'postalcode' => 'string',
+        'postal_code' => 'string',
         'province' => 'string',
         'user_id' => 'string',
         'created_at' => 'datetime',

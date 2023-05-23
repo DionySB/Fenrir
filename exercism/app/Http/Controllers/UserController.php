@@ -33,7 +33,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         $user = $this->userService->registerUser($data);
-        event(new UserRegistered($user));
+
         return response()->json($user);
     }
     

@@ -11,10 +11,10 @@ class Profile extends Model
     protected $table = 'profiles';
 
     protected $fillables = [
-        ''
+        'id'
     ];
 
     protected $casts = [
-        ''
+        'id'
     ];
 }

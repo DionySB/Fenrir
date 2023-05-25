@@ -30,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'password',
         'address_id',
         'profile_id',
+        'remember_token',
         'created_at',
         'updated_at'
     ];
@@ -42,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'email_verified_at' => 'datetime',
         'address_id' => 'string',
         'profile_id' => 'string',
+        'remember_token' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
 

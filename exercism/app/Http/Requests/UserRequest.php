@@ -27,6 +27,10 @@ class UserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'password_confirmation' => 'required_with:password|same:password',
+            'address.street' => 'required|string',
+            'address.city' => 'required|string',
+            'address.province' => 'required|string',
+            'address.postal_code' => 'required|string',
             'address_id' => 'uuid|nullable',
             'profile_id' => 'uuid|nullable',
         ];
@@ -57,6 +61,8 @@ class UserRequest extends FormRequest
             'email.unique' => 'Este e-mail já está cadastrado.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
+            'password_confirmation' => 'As senhas não coincidem.',
+            
         ];
     }
 

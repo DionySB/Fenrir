@@ -28,11 +28,11 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function register(UserRequest $request)
+    public function create(UserRequest $request)
     {
         $data = $request->validated();
 
-        $user = $this->userService->registerUser($data);
+        $user = $this->userService->createUser($data);
 
         return response()->json($user);
     }

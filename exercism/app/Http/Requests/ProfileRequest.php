@@ -1,25 +1,32 @@
 <?php
 
 namespace App\Http\Requests;
-
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProfileRequest extends FormRequest
 {
-  public function authorize()
-  {
-      return true;
-  }
+    public function rules()
+    {
+        return [
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'not_in:email',
+                'regex:/^[\w.-]+$/'
+            ],
+            // Outras regras de validação aqui
+        ];
+    }
 
-  public function rules()
-  {
-      return [
-          'username' => 'required|string',
-          'gender' => 'required|in:male,female,not_specified',
-          'profile_image' => 'nullable|image',
-          'birth_date' => 'required|date',
-      ];
-  }
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'username' => $this->input('username'),
+            'gender' => $this->input('gender'),
+            'birth_date' => $this->input('birth_date'),
+        ]);
+    }
 
   public function messages()
   {

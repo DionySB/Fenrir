@@ -8,7 +8,8 @@
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" id="register-form">
+                            
                             @csrf
 
                             <div class="form-group row">
@@ -60,12 +61,27 @@
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label for="block" class="col-md-4 col-form-label text-md-right">{{ __('Block') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="block" type="text" class="form-control @error('block') is-invalid @enderror" name="block" value="{{ old('block') }}" autocomplete="block">
+
+                                    @error('block')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label for="street" class="col-md-4 col-form-label text-md-right">{{ __('Street') }}</label>
-                            
+
                                 <div class="col-md-6">
                                     <input id="street" type="text" class="form-control @error('address.street') is-invalid @enderror" name="address[street]" value="{{ old('address.street') }}" required>
-                            
+
                                     @error('address.street')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -73,13 +89,13 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 <label for="city" class="col-md-4 col-form-label text-md-right">{{ __('City') }}</label>
-                            
+
                                 <div class="col-md-6">
                                     <input id="city" type="text" class="form-control @error('address.city') is-invalid @enderror" name="address[city]" value="{{ old('address.city') }}" required>
-                            
+
                                     @error('address.city')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -87,18 +103,18 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
-                                <label for="province" class="col-md-4 col-form-label text-md-right">{{ __('province') }}</label>
-                            
+                                <label for="province" class="col-md-4 col-form-label text-md-right">{{ __('Province') }}</label>
+
                                 <div class="col-md-6">
                                     <select id="province" class="form-control @error('address.province') is-invalid @enderror" name="address[province]" required>
                                         <option value="">Select province</option>
                                         @foreach($provinces as $province)
-                                            <option value="{{ $province }}">{{ $province }}</option>
+                                            <option value="{{ $province }}" {{ old('address.province') == $province ? 'selected' : '' }}>{{ $province }}</option>
                                         @endforeach
                                     </select>
-                            
+
                                     @error('address.province')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -120,7 +136,7 @@
                                     @enderror
                                 </div>
                             </div>
-
+                        
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
@@ -136,3 +152,29 @@
     </div>
 @endsection
 
+@section('scripts')
+    <script>
+        // Função para exibir os erros de validação ao lado dos campos correspondentes
+        function showValidationErrors() {
+            var validationErrors = {!! json_encode($errors->messages()) !!};
+
+            // Percorre os campos com erro e exibe a mensagem de erro próxima ao campo
+            for (var fieldName in validationErrors) {
+                var errorMessage = validationErrors[fieldName][0];
+                var fieldElement = document.getElementById(fieldName);
+
+                if (fieldElement) {
+                    var errorElement = document.createElement('span');
+                    errorElement.classList.add('invalid-feedback');
+                    errorElement.innerHTML = errorMessage;
+
+                    fieldElement.classList.add('is-invalid');
+                    fieldElement.parentNode.appendChild(errorElement);
+                }
+            }
+        }
+
+        // Chama a função para exibir os erros de validação quando a página carregar
+        window.addEventListener('load', showValidationErrors);
+    </script>
+@endsection

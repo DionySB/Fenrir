@@ -6,9 +6,9 @@
 
   <label for="gender">Gender:</label>
   <select id="gender" name="gender">
+      <option value="not_specified">Not Specified</option>
       <option value="male">Male</option>
       <option value="female">Female</option>
-      <option value="not_specified">Not Specified</option>
   </select>
 
   <label for="profile_image">Profile Image:</label>

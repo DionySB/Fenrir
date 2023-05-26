@@ -22,11 +22,16 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'password_confirmation' => 'required_with:password|same:password',
+            'password_confirmation' => [
+                'required',
+                'same' => 'A confirmação de senha não corresponde à senha.',
+            ],
+            
             'address.street' => 'required|string',
             'address.city' => 'required|string',
             'address.province' => 'required|string',
@@ -34,6 +39,7 @@ class UserRequest extends FormRequest
             'address_id' => 'uuid|nullable',
             'profile_id' => 'uuid|nullable',
         ];
+
     }
 
     public function store()
@@ -54,6 +60,7 @@ class UserRequest extends FormRequest
      */
     public function messages()
     {
+        
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'email.required' => 'O campo e-mail é obrigatório.',
@@ -66,17 +73,9 @@ class UserRequest extends FormRequest
         ];
     }
 
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function failedValidation($validator)
+    protected function failedValidation(Validator $validator)
     {
-        $errors = $validator->errors()->toArray();
-        throw new \Illuminate\Validation\ValidationException($validator, response()->json($errors, 422));
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
+    
 }

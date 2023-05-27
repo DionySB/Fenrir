@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.navbar-nav {
+  margin-left: auto;
+}
+
+.nav-item {
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: #fff;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-secondary {
+  background-color: #ccc;
+}
+
+.welcome-banner {
+  text-align: center;
+  padding: 100px 0;
+}
+
+.welcome-banner h1 {
+  font-size: 3rem;
+  color: #333;
+}
+
+.welcome-banner p {
+  font-size: 1.5rem;
+  color: #777;
+}
+
+.cta-buttons {
+  margin-top: 30px;
+}

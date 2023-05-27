@@ -37,10 +37,8 @@ class RegisterController extends Controller
         $postalCode = $request->input('address.postal_code');
         $response = Http::withoutVerifying()->get('https://viacep.com.br/ws/' . $postalCode . '/json/');
 
-
         if ($response->successful()) {
             $data = $response->json();
-
             if (!isset($data['erro'])) {
                 $province = Province::where('uf', $data['uf'])->first();
                 if ($province) {

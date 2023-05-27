@@ -15,20 +15,22 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials, true)) {
-            $request->session()->regenerate();
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
+    
+        if (Auth::attempt($credentials, $remember)) {
+            // Verifica se o usuário possui um profile_id definido
+            $user = Auth::user();
+            if ($user->profile_id === null) {
+                return redirect()->route('profile.create');
+            }
+    
             return redirect()->intended('/');
+        } else {
+            return back()->withErrors([
+                'email' => 'Credenciais inválidas',
+            ]);
         }
-
-        return back()->withErrors([
-            'email' => 'Email ou senha estão incorretos.',
-        ]);
     }
 
     public function logout(Request $request)

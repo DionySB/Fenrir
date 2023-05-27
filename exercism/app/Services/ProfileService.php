@@ -9,19 +9,14 @@ class ProfileService
 {
     public function createProfile(User $user, array $data)
     {
-        $profile = new Profile();
-
-        $profile->username = $data['username'];
-        $profile->gender = $data['gender'];
-        $profile->birth_date = $data['birth_date'];
-
-        if ($data['profile_image']) {
-            $profileImage = $data['profile_image'];
-            $profileImage->store('public/profiles'); 
-            $profile->profile_image = $profileImage->hashName();
-        }
-
+        // Criar o perfil associado ao usuário
+        $profile = Profile::create($data);
+        
+        // Associar o perfil ao usuário
         $profile->user_id = $user->id;
         $profile->save();
+
+        $user->profile_id = $profile->id;
+        $user->save();
+        }
     }
-}

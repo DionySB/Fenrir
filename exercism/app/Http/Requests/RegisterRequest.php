@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]*$/',
             'password_confirmation' => 'required|same:password',
             'address.postal_code' => 'required|string',
             'address.province' => 'required|string',
@@ -48,11 +48,13 @@ class RegisterRequest extends FormRequest
             'password.required' => 'O campo de senha é obrigatório.',
             'password.string' => 'O campo de senha deve ser uma string.',
             'password.min' => 'A senha deve ter no mínimo :min caracteres.',
+            'password.regex' => 'A senha deve conter no mínimo 6 caracteres, incluindo pelo menos uma letra e um número. Os seguintes símbolos são permitidos: !@#$%^&*',
             'password_confirmation.required' => 'O campo de confirmação de senha é obrigatório.',
             'password_confirmation.same' => 'O campo de confirmação de senha deve ser igual ao campo de senha.',
             // Adicione outras mensagens de erro personalizadas aqui...
         ];
     }
+    
 
     
 }

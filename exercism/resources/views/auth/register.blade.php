@@ -84,21 +84,10 @@
     </div>
 @endsection
 
-<!-- register.blade.php -->
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<style>
-    .found-field {
-        background-color: #e8f0fe;
-    }
-    .error-label {
-        color: red;
-    }
-</style>
-
+<link href="{{ asset('css/register.css') }}" rel="stylesheet">
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const postalCodeInput = document.getElementById('postal_code');
+    const postalCodeInput = document.querySelector('input[name="address[postal_code]"]');
     const provinceInput = document.getElementById('province');
     const cityInput = document.getElementById('city');
     const districtInput = document.getElementById('district');
@@ -123,37 +112,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function searchAddress() {
-    const postalCode = postalCodeInput.value.trim().replace('-', '');
+        const postalCode = postalCodeInput.value.trim().replace('-', '');
 
-    fetch(`/proxy.php?postal_code=${postalCode}`)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('CEP inválido');
-            }
-        })
-        .then(data => {
-            if (!data.erro) {
-                provinceInput.value = data.uf;
-                cityInput.value = data.localidade;
-                districtInput.value = data.bairro;
-                provinceInput.classList.add('found-field');
-                cityInput.classList.add('found-field');
-                districtInput.classList.add('found-field');
-                errorLabel.textContent = '';
-            } else {
+        fetch(`/proxy.php?postal_code=${postalCode}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('CEP inválido');
+                }
+            })
+            .then(data => {
+                if (!data.erro) {
+                    provinceInput.value = data.uf;
+                    cityInput.value = data.localidade;
+                    districtInput.value = data.bairro;
+                    provinceInput.classList.add('found-field');
+                    cityInput.classList.add('found-field');
+                    districtInput.classList.add('found-field');
+                    errorLabel.textContent = '';
+                } else {
+                    resetAddressFields();
+                    displayError('CEP não encontrado');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 resetAddressFields();
-                displayError('CEP não encontrado');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            resetAddressFields();
-            displayError('CEP inválido');
-        });
-}
-
+                displayError('CEP inválido');
+            });
+    }
 
     function resetAddressFields() {
         provinceInput.value = '';
@@ -165,10 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayError(message) {
-    const errorLabel = document.querySelector('.error-label');
-    if (errorLabel) {
-        errorLabel.textContent = message;
+        if (errorLabel) {
+            errorLabel.textContent = message;
+        }
     }
-}
 });
+
 </script>

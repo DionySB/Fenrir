@@ -3,15 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/register.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/partials/footer.css') }}" rel="stylesheet"> 
+    <link rel="stylesheet" href="css/partials/navbar.css">
+    
     @yield('meta')
 </head>
 <body>
@@ -19,13 +17,15 @@
         @include('partials.nav')
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                @yield('content')
+            </div>
         </main>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    @include('partials.footer')
 
+    <script src="{{ asset('js/app.js') }}" defer></script>
     @yield('scripts')
 </body>
 </html>

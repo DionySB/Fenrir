@@ -24,16 +24,16 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('address')->get();
+        $users = User::with('address', 'address.user', 'profile')->get();
         return response()->json($users);
     }
 
-    public function register(UserRequest $request)
+    public function create(UserRequest $request)
     {
         $data = $request->validated();
 
-        $user = $this->userService->registerUser($data);
-        event(new UserRegistered($user));
+        $user = $this->userService->createUser($data);
+
         return response()->json($user);
     }
     
@@ -85,7 +85,7 @@ class UserController extends Controller
         return response()->json(['message' => 'User untrashed successfully'], 200);
     }
 
-   /* public function verifyEmail($id, $hash)
+    public function verifyEmail($id, $hash)
     {
         $user = User::findOrFail($id);
 
@@ -96,7 +96,7 @@ class UserController extends Controller
         }
 
         return redirect('/home');
-    }*/
+    }
 
     public function store_address(){
 

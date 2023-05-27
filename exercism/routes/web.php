@@ -8,6 +8,9 @@ use App\Http\Controllers\EmailVerificationPromptController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VerificationController;
 
@@ -16,30 +19,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/home', function () {
+    return view('home.home');
+})->name('home');
 
-require __DIR__.'/auth.php';
-
-Route::get('/users/{id}/verify-email/{hash}', [UserController::class, 'verifyEmail'])->name('verify.email');
-
-Route::group(['middleware' => ['auth']], function() {
-
-    Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify')->middleware(['signed']);
-    Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
-
+// Login of user
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
 });
 
-Route::group(['middleware' => ['auth']], function() {
-    //only verified account can access with this group
-    Route::group(['middleware' => ['verified']], function() {
+// Reset Password
+Route::get('/password/request', [ResetPasswordController::class, 'showResetForm'])->name('password.request');
+Route::post('/password/email', [ResetPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Register of user
+Route::get('/users/{id}/verify-email/{hash}', [UserController::class, 'verifyEmail'])->name('verify.email');
+
+Route::middleware(['auth', 'profile.verification'])->group(function () {
+Route::middleware('auth')->group(function () {
+        Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+        Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify')->middleware(['signed']);
+        Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+
+        Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
+        Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
+        Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+        Route::middleware('verified')->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+        });
     });
-}); 
-
+});
 require __DIR__.'/auth.php';
-
-
-

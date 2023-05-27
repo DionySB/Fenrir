@@ -18,7 +18,7 @@ class CustomVerifyEmailNotification extends VerifyEmail
             ->subject('Verificação de email')
             ->line('Por favor, clique no botão abaixo para verificar seu endereço de email.')
             ->action('Verificar Email', $verificationUrl)
-            ->line('Se você não criou uma conta, nenhuma ação adicional é necessária.');
+            ->line('Se não foi você quem criou a conta, por favor, desconsidere o email');
     }
 
     protected function verificationUrl($notifiable)

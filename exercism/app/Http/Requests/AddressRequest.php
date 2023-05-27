@@ -22,24 +22,10 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'password_confirmation' => [
-                'required',
-                'same' => 'A confirmação de senha não corresponde à senha.',
-            ],
-            
-            'address.street' => 'required|string',
-            'address.city' => 'required|string',
-            'address.province' => 'required|string',
-            'address.postal_code' => 'required|string',
-            'address_id' => 'uuid|nullable',
-            'profile_id' => 'uuid|nullable',
-        ];
 
+            'address_id' => 'uuid|nullable',
+        ];
     }
 
     public function store()
@@ -60,7 +46,6 @@ class UserRequest extends FormRequest
      */
     public function messages()
     {
-        
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'email.required' => 'O campo e-mail é obrigatório.',
@@ -68,14 +53,20 @@ class UserRequest extends FormRequest
             'email.unique' => 'Este e-mail já está cadastrado.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
-            'password_confirmation' => 'As senhas não coincidem.',
-            
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function failedValidation($validator)
     {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
+        $errors = $validator->errors()->toArray();
+        throw new \Illuminate\Validation\ValidationException($validator, response()->json($errors, 422));
     }
-    
 }

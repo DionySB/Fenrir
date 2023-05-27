@@ -5,4 +5,6 @@
         <h1>Dashboard</h1>
         <p class="lead">Authenticated..</p>
     </div>
+
+    @include('auth.logout')
 @endsection

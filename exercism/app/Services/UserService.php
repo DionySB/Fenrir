@@ -3,16 +3,29 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use App\Models\User;
-use App\Events\UserRegistered;
+use App\Models\Address;
 
 class UserService
 {
-    public function registerUser(array $data)
+    public function createUser(array $data)
     {
+        $addressData = $data['address'];
+        unset($data['address']);
+
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
-        $user->sendEmailVerificationNotification();
+
+        $address = Address::create($addressData);
+
+        $user->address_id = $address->id;
+        $user->save();
+
+        $user->address = $address;
+
+        $this->sendEmailVerification($user);
+
         return $user;
     }
 
@@ -20,15 +33,18 @@ class UserService
     {
         if (isset($data['password']) && !empty($data['password'])) {
             if ($data['password_confirmation'] != $data['password']) {
-                return ['error' => 'Password confirmation does not match'];
+                throw ValidationException::withMessages(['password_confirmation' => 'Password confirmation does not match']);
             }
-            $user->password = bcrypt($data['password']);
+            $user->password = Hash::make($data['password']);
             unset($data['password']);
             unset($data['password_confirmation']);
         }
         $user->fill($data);
         $user->save();
-
-        return $user;
+    }
+    
+    private function sendEmailVerification(User $user)
+    {
+        $user->sendEmailVerificationNotification();
     }
 }

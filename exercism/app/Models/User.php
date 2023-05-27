@@ -12,6 +12,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Address;
+use App\Models\Profile;
 use App\Notifications\CustomVerifyEmailNotification;
 
 class User extends Authenticatable implements MustVerifyEmailContract
@@ -29,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'password',
         'address_id',
         'profile_id',
+        'remember_token',
         'created_at',
         'updated_at'
     ];
@@ -41,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'email_verified_at' => 'datetime',
         'address_id' => 'string',
         'profile_id' => 'string',
+        'remember_token' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
 
@@ -61,6 +64,6 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     public function profile()
     {
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class, 'id', 'profile_id');
     }
 }

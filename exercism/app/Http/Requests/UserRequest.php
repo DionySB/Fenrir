@@ -24,28 +24,20 @@ class UserRequest extends FormRequest
     {
 
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'password_confirmation' => [
-                'required',
-                'same' => 'A confirmação de senha não corresponde à senha.',
-            ],
-            
-            'address.street' => 'required|string',
-            'address.city' => 'required|string',
-            'address.province' => 'required|string',
-            'address.postal_code' => 'required|string',
-            'address_id' => 'uuid|nullable',
-            'profile_id' => 'uuid|nullable',
+
         ];
 
     }
 
-    public function store()
+    public function createRules()
     {
         return [
-
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]*$/',
+            'password_confirmation' => 'required|same:password', 
+            'address_id' => 'uuid|nullable',
+            'profile_id' => 'uuid|nullable',
         ];
     }
 
@@ -62,20 +54,19 @@ class UserRequest extends FormRequest
     {
         
         return [
-            'name.required' => 'O campo nome é obrigatório.',
-            'email.required' => 'O campo e-mail é obrigatório.',
-            'email.email' => 'O e-mail fornecido não é válido.',
-            'email.unique' => 'Este e-mail já está cadastrado.',
-            'password.required' => 'O campo senha é obrigatório.',
-            'password.min' => 'A senha deve ter pelo menos 6 caracteres.',
-            'password_confirmation' => 'As senhas não coincidem.',
+            'name.required' => 'O campo de nome é obrigatório.',
+            'name.string' => 'O campo de nome deve ser uma string.',
+            'email.required' => 'O campo de e-mail é obrigatório.',
+            'email.email' => 'O campo de e-mail deve ser um endereço de e-mail válido.',
+            'email.unique' => 'O e-mail fornecido já está em uso.',
+            'password.required' => 'O campo de senha é obrigatório.',
+            'password.string' => 'O campo de senha deve ser uma string.',
+            'password.min' => 'A senha deve ter no mínimo :min caracteres.',
+            'password.regex' => 'A senha deve conter no mínimo 6 caracteres, incluindo pelo menos uma letra e um número. Os seguintes símbolos são permitidos: !@#$%^&*',
+            'password_confirmation.required' => 'O campo de confirmação de senha é obrigatório.',
+            'password_confirmation.same' => 'O campo de confirmação de senha deve ser igual ao campo de senha.',
             
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
     
 }

@@ -38,7 +38,7 @@ Route::post('/password/email', [ResetPasswordController::class, 'sendResetLinkEm
 // Register of user
 Route::get('/users/{id}/verify-email/{hash}', [UserController::class, 'verifyEmail'])->name('verify.email');
 
-Route::middleware(['auth', 'profile.verification'])->group(function () {
+//Route::middleware(['auth', 'profile.verification'])->group(function () {
 Route::middleware('auth')->group(function () {
         Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
         Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify')->middleware(['signed']);
@@ -51,5 +51,5 @@ Route::middleware('auth')->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
         });
     });
-});
+//});
 require __DIR__.'/auth.php';

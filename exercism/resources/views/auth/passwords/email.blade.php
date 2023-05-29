@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
+<a href="{{ route('home') }}" class="btn btn-success btn-sm">
+    <span class="fas fa-arrow-right">Ir para página inicial</span>
+</a>
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -14,7 +19,7 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('password.email') }}">
+                        <form method="POST" action="{{ route('password.send_reset_link') }}">
                             @csrf
 
                             <div class="form-group row">

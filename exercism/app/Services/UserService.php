@@ -15,33 +15,37 @@ class UserService
         $data['password'] = Hash::make($data['password']);
         
         $user = User::create($data);
-        $user->save();
-        $this->sendEmailVerification($user);
-
+    
+        if (isset($data['address_id'])) {
+            $address = Address::find($data['address_id']);
+    
+            if ($address) {
+                $address->user_id = $user->id;
+                $address->save();
+            }
+        }
+    
+        // $user->sendEmailVerificationNotification();
         return $user;
     }
-
+    
     public function registerUser(array $data)
     {
         $addressData = $data['address'];
+ 
         unset($data['address']);
-
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
 
         $address = Address::create($addressData);
-
         $user->address_id = $address->id;
+        $address->user_id = $user->id;
         $user->save();
+        $address->save();
 
-        $user->address = $address;
-
-        $this->sendEmailVerification($user);
-
+       // $user->sendEmailVerificationNotification();
         return $user;
     }
-
-
 
     public function updateUser(User $user, array $data)
     {
@@ -56,9 +60,10 @@ class UserService
         $user->fill($data);
         $user->save();
     }
+
     
     private function sendEmailVerification(User $user)
     {
-        $user->sendEmailVerificationNotification();
+        $user->notify(new CustomVerifyEmailNotification);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('block')->nullable();
             $table->string('street');
+            $table->string('address_street');
             $table->string('city');
             $table->string('postal_code')->nullable();
             $table->string('province');

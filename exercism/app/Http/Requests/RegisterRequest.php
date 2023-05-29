@@ -31,6 +31,7 @@ class RegisterRequest extends FormRequest
             'address.city' => 'required|string',
             'address.district' => 'required|string',
             'address.street' => 'required|string',
+           // 'address.street_address' => 'required|string',
             'address.block' => 'nullable|string',
             'address_id' => 'uuid|nullable',
             'profile_id' => 'uuid|nullable',
@@ -49,7 +50,7 @@ class RegisterRequest extends FormRequest
             'password.regex' => 'A senha deve conter no mínimo 6 caracteres, incluindo pelo menos uma letra e um número. Os seguintes símbolos são permitidos: !@#$%^&*',
             'password_confirmation.required' => 'O campo de confirmação de senha é obrigatório.',
             'password_confirmation.same' => 'O campo de confirmação de senha deve ser igual ao campo de senha.',
-            // Adicione outras mensagens de erro personalizadas aqui...
+            //'address.street_address.required' => 'A numeração da sua casa é obrigatória'
         ];
     }
     

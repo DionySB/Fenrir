@@ -8,10 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
-use App\Events\UserCreated;
 use Illuminate\Support\Facades\Log;
 use App\Events\UserRegistered;
 use App\Services\UserService;
+use Illuminate\Auth\Events\Verified;
+
 
 class UserController extends Controller
 {
@@ -30,10 +31,8 @@ class UserController extends Controller
 
     public function create(UserRequest $request)
     {
-        //dd($request->validate($request));
-        $data = $request->validate($request->createRules(), $request->messages());
-
-
+        $data = $request->validate($request->store());
+        
         $user = $this->userService->createUser($data);
 
         return response()->json($user);
@@ -42,13 +41,8 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
-        $validatedData = $request->validated();
-    
-        $result = $this->userService->updateUser($user, $validatedData);
-    
-        if (isset($result['error'])) {
-            return response()->json(['error' => $result['error']], 422);
-        }
+        $data = $request->validate($request->update());
+        $result = $this->userService->updateUser($user, $data);
     
         return response()->json([
             'message' => 'User updated successfully',
@@ -98,15 +92,5 @@ class UserController extends Controller
         }
 
         return redirect('/home');
-    }
-
-    public function store_address(){
-
-        $user = User::find(1);
-
-        $adress_id = new Address;
-        $address_id->user_id = $user->id;
-        $adress_id->save();
-        dd($address_id);
     }
 }

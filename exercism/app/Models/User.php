@@ -52,10 +52,13 @@ class User extends Authenticatable implements MustVerifyEmailContract
     /**
      * void
      */
+
+    
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmailNotification);
     }
+    
 
     public function address()
     {

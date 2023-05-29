@@ -39,6 +39,7 @@ class RegisterController extends Controller
 
         if ($response->successful()) {
             $data = $response->json();
+            //dd($data);
             if (!isset($data['erro'])) {
                 $province = Province::where('uf', $data['uf'])->first();
                 if ($province) {
@@ -46,15 +47,17 @@ class RegisterController extends Controller
                         'address.province' => $province->name,
                         'address.city' => $data['localidade'],
                         'address.district' => $data['bairro'],
+                        'address.street' => $data['logradouro'],
                     ]);
                 }
             }
         }
 
         $data = $request->all();
+
         $user = $this->userService->registerUser($data);
 
-        return redirect('/profile/create');
+        return redirect('home');
     }
 }
 

@@ -1,22 +1,43 @@
+
+.welcome-banner {
+  background-color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.welcome-banner h1 {
+  font-size: 36px;
+  color: #333;
+}
+
+.welcome-banner p {
+  font-size: 18px;
+  color: #666;
+}
+
 .bg-light {
-  background-color: #f8f9fa;
+  background-color: #f8f8f8;
   padding: 20px;
-  border-radius: 5px;
   margin-top: 20px;
 }
 
-h1 {
-  margin-bottom: 10px;
-}
-
 .lead {
-  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
 }
 
-.btn {
-  margin-right: 10px;
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
 }
 
-.body {
-  background-color: aquamarine;
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
 }
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #333;
+}
+

@@ -24,25 +24,17 @@ class ProfileController extends Controller
 
     public function store(ProfileRequest $request)
     {
-        
         $user = auth()->user();
     
-        // Verificar se o usuário já possui um perfil
-        if ($user->profile) {
-            return redirect()->route('home')->with('message', 'Você já possui um perfil.');
-        }
-    
-        // Validar os dados do perfil
-
         $request->validate($request->profileRules(), $request->messages());
-
+    
         $data = $request->all();
-        // Criar o perfil
-
+    
         $this->profileService->createProfile($user, $data);
     
         return redirect()->route('home')->with('message', 'Perfil criado com sucesso.');
     }
+    
     
     
 }

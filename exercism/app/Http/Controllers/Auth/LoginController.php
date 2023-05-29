@@ -25,7 +25,7 @@ class LoginController extends Controller
                 return redirect()->route('profile.create');
             }
     
-            return redirect()->intended('/');
+            return redirect()->intended('home');
         } else {
             return back()->withErrors([
                 'email' => 'Credenciais inválidas',

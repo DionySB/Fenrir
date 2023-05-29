@@ -2,8 +2,8 @@
 
 @section('content')
 
-    <a href="{{ route('register') }}" class="btn btn-success btn-sm">
-        <span class="fas fa-arrow-right">Voltar ao Registro</span>
+    <a href="{{ route('home') }}" class="btn btn-success btn-sm">
+        <span class="fas fa-arrow-right">Voltar</span>
     </a>
 
     <div class="container">
@@ -60,8 +60,8 @@
                                         {{ __('Login') }}
                                     </button>
                             
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    @if (Route::has('password.email'))
+                                        <a class="btn btn-link" href="{{ route('password.email') }}">
                                             {{ __('Forgot Your Password?') }}
                                         </a>
                                     @endif

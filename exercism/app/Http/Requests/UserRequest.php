@@ -9,33 +9,35 @@ use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
-    /**
-     * 
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * 
-     */
     public function rules()
     {
+        if ($this->isMethod('POST')) {
+            return $this->store();
+        } elseif ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            return $this->update();
+        }
 
-        return [
-
-        ];
-
+        return [];
     }
 
-    public function createRules()
+    public function store()
     {
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]*$/',
-            'password_confirmation' => 'required|same:password', 
+            'address.postal_code' => 'nullable|string',
+            'address.province' => 'nullable|string',
+            'address.city' => 'nullable|string',
+            'address.district' => 'nullable|string',
+            'address.street' => 'nullable|string',
+            'address.street_address' => 'nullable|string',
+            'address.block' => 'nullable|string',
             'address_id' => 'uuid|nullable',
             'profile_id' => 'uuid|nullable',
         ];
@@ -43,16 +45,30 @@ class UserRequest extends FormRequest
 
     public function update()
     {
-        return [
+        $userId = $this->route('user')->id;
 
+        return [
+            'name' => 'required|string',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($userId),
+            ],
+            'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]*$/',
+            'address.postal_code' => 'nullable|string',
+            'address.province' => 'nullable|string',
+            'address.city' => 'nullable|string',
+            'address.district' => 'nullable|string',
+            'address.street' => 'nullable|string',
+            'address.street_address' => 'nullable|string',
+            'address.block' => 'nullable|string',
+            'address_id' => 'uuid|nullable',
+            'profile_id' => 'uuid|nullable',
         ];
     }
-    /**
-     * 
-     */
+
     public function messages()
     {
-        
         return [
             'name.required' => 'O campo de nome é obrigatório.',
             'name.string' => 'O campo de nome deve ser uma string.',
@@ -65,8 +81,11 @@ class UserRequest extends FormRequest
             'password.regex' => 'A senha deve conter no mínimo 6 caracteres, incluindo pelo menos uma letra e um número. Os seguintes símbolos são permitidos: !@#$%^&*',
             'password_confirmation.required' => 'O campo de confirmação de senha é obrigatório.',
             'password_confirmation.same' => 'O campo de confirmação de senha deve ser igual ao campo de senha.',
-            
         ];
     }
     
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
+    }
 }

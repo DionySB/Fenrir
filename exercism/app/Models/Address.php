@@ -22,6 +22,7 @@ class Address extends Model
         'id',
         'street',
         'city',
+        'address_street',
         'postal_code',
         'province',
         'user_id',
@@ -33,6 +34,7 @@ class Address extends Model
     protected $casts = [
         'id' => 'string',
         'street' => 'string',
+        'address_street' => 'string',
         'city' => 'string',
         'postal_code' => 'string',
         'province' => 'string',

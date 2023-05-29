@@ -23,13 +23,13 @@ class ProfileRequest extends FormRequest
     {
         return [
             'username' => [
+                'unique:profiles',
                 'required',
                 'string',
                 'min:3',
                 'max:50',
                 'not_in:email',
                 'regex:/^[\w.-]+$/',
-                Rule::unique('profiles')->ignore($this->user()->profile),
             ],
             'gender' => 'required|in:Feminino,Masculino,Prefiro não dizer,Outro',
             'profile_image' => 'required|image',

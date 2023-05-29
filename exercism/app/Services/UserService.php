@@ -9,7 +9,19 @@ use App\Models\Address;
 
 class UserService
 {
+
     public function createUser(array $data)
+    {
+        $data['password'] = Hash::make($data['password']);
+        
+        $user = User::create($data);
+        $user->save();
+        $this->sendEmailVerification($user);
+
+        return $user;
+    }
+
+    public function registerUser(array $data)
     {
         $addressData = $data['address'];
         unset($data['address']);
@@ -28,6 +40,8 @@ class UserService
 
         return $user;
     }
+
+
 
     public function updateUser(User $user, array $data)
     {

@@ -52,7 +52,7 @@ class RegisterController extends Controller
         }
 
         $data = $request->all();
-        $user = $this->userService->createUser($data);
+        $user = $this->userService->registerUser($data);
 
         return redirect('/profile/create');
     }

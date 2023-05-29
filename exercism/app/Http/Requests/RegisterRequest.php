@@ -41,12 +41,10 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name.required' => 'O campo de nome é obrigatório.',
-            'name.string' => 'O campo de nome deve ser uma string.',
             'email.required' => 'O campo de e-mail é obrigatório.',
             'email.email' => 'O campo de e-mail deve ser um endereço de e-mail válido.',
             'email.unique' => 'O e-mail fornecido já está em uso.',
             'password.required' => 'O campo de senha é obrigatório.',
-            'password.string' => 'O campo de senha deve ser uma string.',
             'password.min' => 'A senha deve ter no mínimo :min caracteres.',
             'password.regex' => 'A senha deve conter no mínimo 6 caracteres, incluindo pelo menos uma letra e um número. Os seguintes símbolos são permitidos: !@#$%^&*',
             'password_confirmation.required' => 'O campo de confirmação de senha é obrigatório.',

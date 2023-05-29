@@ -30,7 +30,9 @@ class UserController extends Controller
 
     public function create(UserRequest $request)
     {
-        $data = $request->validated();
+        //dd($request->validate($request));
+        $data = $request->validate($request->createRules(), $request->messages());
+
 
         $user = $this->userService->createUser($data);
 

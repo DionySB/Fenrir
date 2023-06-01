@@ -91,6 +91,7 @@
 
 <link href="{{ asset('css/register.css') }}" rel="stylesheet">
 <script>
+    /*
 document.addEventListener('DOMContentLoaded', function() {
     const postalCodeInput = document.querySelector('input[name="address[postal_code]"]');
     const provinceInput = document.getElementById('province');
@@ -168,5 +169,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
-
+*/
 </script>

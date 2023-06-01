@@ -13,7 +13,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VerificationController;
-
+use App\Http\Controllers\NavbarController;
 
 Route::get('/', function () {
     return view('home.home');
@@ -49,5 +49,11 @@ Route::post('/profile', [ProfileController::class, 'store'])->name('profile.stor
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('verified');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('verified');
 /*<===============================================================================================================================>*/
+Route::get('/', [NavbarController::class, 'home'])->name('home');
+Route::get('/about', [NavbarController::class, 'about'])->name('about');
+Route::get('/contact', [NavbarController::class, 'contact'])->name('contact');
+Route::get('/search', [NavbarController::class, 'search'])->name('search');
+Route::get('/newsletter', [NavbarController::class, 'newsletter'])->name('newsletter');
+
 
 require __DIR__.'/auth.php';

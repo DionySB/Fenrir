@@ -3,6 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\Api\AuthController;
+
+Route::controller(AuthController::class)->group(function () {
+  Route::post('signin', 'signin');
+  Route::post('signup', 'signup');
+  Route::get('logout', 'logout')->middleware('auth:sanctum');
+});
 
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/{id}', [UserController::class, 'show']);

@@ -9,7 +9,7 @@
 <div class="align">
 <div class="bg-light p-5 rounded">
     @auth
-    <p class="lead">Only authenticated users can access this section.</p>
+    <p class="lead">Para visualizar essa página, é necessário realizar a confirmação do seu e-mail.</p>
     <a href="{{ route('dashboard.index') }}" class="btn btn-lg btn-warning me-2">Ir para o Dashboard</a>
     <div class="cta-buttons"> <br>
          @include('auth.logout') 

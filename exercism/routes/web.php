@@ -14,10 +14,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\GymController;
 
 Route::get('/', function () {
     return view('home.home');
 });
+
+Route::get('/gyms', [GymController::class, 'showGyms'])->name('gyms');
 
 /*<===============================================================================================================================>*/
 Route::middleware('guest')->group(function () {

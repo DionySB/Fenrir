@@ -3,14 +3,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <a href="{{ route('home') }}" class="btn btn-success btn-sm">
-        <span class="fas fa-arrow-right">Voltar</span>
-    </a>
     <div class="register-container">
-        <h2>Register</h2>
+        <h2>Começe agora mesmo seu processo e mudança na Vida FIT</h2>
         <form method="POST" action="{{ route('register') }}">
             @csrf
-        
+        <div class="position-relative-to-top">
             <div>
                 <label for="name">Nome Completo</label>
                 <input id="name" type="text" name="name" value="{{ old('name') }}" autofocus required>
@@ -85,13 +82,12 @@
         
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
-    
+        </div>
     </div>
 @endsection
 
 <link href="{{ asset('css/register.css') }}" rel="stylesheet">
 <script>
-    /*
 document.addEventListener('DOMContentLoaded', function() {
     const postalCodeInput = document.querySelector('input[name="address[postal_code]"]');
     const provinceInput = document.getElementById('province');
@@ -169,5 +165,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
-*/
+
 </script>

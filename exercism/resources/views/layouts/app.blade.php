@@ -14,8 +14,10 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
+    <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
-
+    <link href="{{ asset('css/navbar.css')}}" rel="stylesheet">
+    
     @yield('styles')
 </head>
 <body>
@@ -28,7 +30,6 @@
         </main>
     </div>
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
     @include('partials.footer')
     @yield('scripts')
     

@@ -141,8 +141,8 @@
 /* Personalização das cores do tema */
 
 body {
-  color: #000000;
-  background-color: #ffffff;
+background-color: #FFFFFF;
+
 }
 
 .btn-primary {
@@ -171,3 +171,6 @@ body {
   border-color: #ff9900;
   color: #ffffff;
 }
+
+
+

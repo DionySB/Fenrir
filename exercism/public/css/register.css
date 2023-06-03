@@ -65,3 +65,8 @@ button[type="button"] {
 .error-label {
   color: red;
 }
+
+.register-container{
+
+  padding-top: 10vh;
+}

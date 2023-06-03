@@ -1,0 +1,15 @@
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.order-md-1{
+  position: column;
+}
+.card-text{
+  color: black;
+}
+
+#contact-form {
+  padding-top: 10vh;
+}

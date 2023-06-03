@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class AddressRequest extends FormRequest
+class GymRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -40,16 +40,15 @@ class AddressRequest extends FormRequest
      *
      * @return array
      */
+
     public function store()
     {
         return [
-            'postal_code' => 'required|string',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'district' => 'required|string',
-            'street' => 'required|string',
-            'address_street' => 'required|string',
-            'block' => 'nullable|string',
+            
+            'name' => 'required|string',
+            'image' => 'nullable|image',
+            'description' => 'nullable|string',
+            'address_id' => 'required|string',
         ];
     }
 
@@ -61,13 +60,10 @@ class AddressRequest extends FormRequest
     public function update()
     {
         return [
-            'postal_code' => 'nullable|string',
-            'province' => 'nullable|string',
-            'city' => 'nullable|string',
-            'district' => 'nullable|string',
-            'street' => 'nullable|string',
-            'address_street' => 'nullable|string',
-            'block' => 'nullable|string',
+            'name' => 'nullable|string',
+            'image' => 'nullable|image',
+            'description' => 'nullable|string',
+            'address_id' => 'nullable|string',
         ];
     }
 
@@ -79,13 +75,8 @@ class AddressRequest extends FormRequest
     public function messages()
     {
         return [
-            'postal_code.required' => 'O campo postal_code é obrigatório.',
-            'province.required' => 'O campo province é obrigatório.',
-            'city.required' => 'O campo city é obrigatório.',
-            'district.required' => 'O campo district é obrigatório.',
-            'street.required' => 'O campo street é obrigatório.',
-            'street_address.required' => 'O campo street_address é obrigatório.',
-
+            'name.required' => 'Informe um nome para a academia.',
+            'address_id' => 'Informe um address_id para a academia.',
         ];
     }
 

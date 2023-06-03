@@ -8,7 +8,7 @@ class NavbarController extends Controller
 {
     public function home()
     {
-        return view('pages.home');
+        return view('home.home');
     }
 
     public function about()
@@ -23,7 +23,6 @@ class NavbarController extends Controller
 
     public function search()
     {
-        // Lógica para realizar a busca
-        // Retorne a view adequada com os resultados da busca
+
     }
 }

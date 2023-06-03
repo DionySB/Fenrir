@@ -19,7 +19,7 @@ class ProfileRequest extends FormRequest
         return [];
     }
 
-    public function profileRules()
+    public function store()
     {
         return [
             'username' => [
@@ -34,6 +34,29 @@ class ProfileRequest extends FormRequest
             'gender' => 'required|in:Feminino,Masculino,Prefiro não dizer,Outro',
             'profile_image' => 'required|image',
             'birth_date' => 'required|date',
+            'fitness_goals' => 'nullable|string',
+            'fitness_level' => 'nullable|in:beginner,intermediate,advanced',
+            'health_info' => 'nullable|string',
+            'exercise_history' => 'nullable|string',
+            'time_preferences' => 'nullable|string',
+        ];
+    }
+
+    public function update()
+    {
+        return [
+            'username' => [
+                'unique:profiles',
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+                'not_in:email',
+                'regex:/^[\w.-]+$/',
+            ],
+            'gender' => 'nullable|in:Feminino,Masculino,Prefiro não dizer,Outro',
+            'profile_image' => 'nullable|image',
+            'birth_date' => 'nullable|date',
             'fitness_goals' => 'nullable|string',
             'fitness_level' => 'nullable|in:beginner,intermediate,advanced',
             'health_info' => 'nullable|string',

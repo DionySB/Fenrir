@@ -60,7 +60,7 @@ class UserRequest extends FormRequest
             'address.city' => 'nullable|string',
             'address.district' => 'nullable|string',
             'address.street' => 'nullable|string',
-            'address.street_address' => 'nullable|string',
+            'address.address_street' => 'nullable|string',
             'address.block' => 'nullable|string',
             'address_id' => 'uuid|nullable',
             'profile_id' => 'uuid|nullable',

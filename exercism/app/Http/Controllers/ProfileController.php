@@ -26,7 +26,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
     
-        $request->validate($request->profileRules(), $request->messages());
+        $request->validate($request->store(), $request->messages());
     
         $data = $request->all();
     
